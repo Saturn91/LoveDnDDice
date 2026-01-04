@@ -50,7 +50,8 @@ function Dice.getDicesFromFormula(diceFormula)
 end
 
 -- dice formula can be "2d6" "d6" "2d6+3"
-function Dice.roll(diceFormula)
+-- options can include: advantage (boolean), disadvantage (boolean)
+function Dice.roll(diceFormula, options)
     if not Dice.validateFormula(diceFormula) then
         if Log and Log.log then
             Log.log("invalid dice markup " .. (diceFormula or "nil"))
@@ -60,6 +61,29 @@ function Dice.roll(diceFormula)
         return
     end
     
+    options = options or {}
+    local hasAdvantage = options.advantage == true
+    local hasDisadvantage = options.disadvantage == true
+    
+    -- Roll once normally, or twice for advantage/disadvantage
+    local roll1 = Dice.rollOnce(diceFormula)
+    
+    if hasAdvantage and not hasDisadvantage then
+        -- Advantage: roll twice, take higher
+        local roll2 = Dice.rollOnce(diceFormula)
+        return math.max(roll1, roll2)
+    elseif hasDisadvantage and not hasAdvantage then
+        -- Disadvantage: roll twice, take lower
+        local roll2 = Dice.rollOnce(diceFormula)
+        return math.min(roll1, roll2)
+    else
+        -- Normal roll (both flags set cancel out, or neither set)
+        return roll1
+    end
+end
+
+-- Internal function to roll dice once without advantage/disadvantage
+function Dice.rollOnce(diceFormula)
     -- Parse the dice formula
     local diceSize, numDice, modifier = Dice.getDicesFromFormula(diceFormula)
     

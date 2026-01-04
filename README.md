@@ -108,6 +108,21 @@ Dice.roll("4d10+5")  -- Roll 4d10 and add 5
 Dice.roll("2d6 + 3") -- Same as "2d6+3"
 ```
 
+### Advantage and Disadvantage
+
+For D&D-style advantage/disadvantage mechanics (typically used with d20 rolls):
+
+```lua
+-- Advantage: roll twice, take higher
+local attackRoll = Dice.roll("d20", {advantage = true})
+
+-- Disadvantage: roll twice, take lower  
+local stealthCheck = Dice.roll("d20", {disadvantage = true})
+
+-- Both flags cancel each other out (normal roll)
+local normalRoll = Dice.roll("d20", {advantage = true, disadvantage = true})
+```
+
 ### Validation
 
 Before rolling, you can validate dice formulas:
@@ -152,19 +167,25 @@ love .
 
 ## API Reference
 
-### Dice.roll(diceFormula)
+### Dice.roll(diceFormula, options)
 
 Rolls dice according to the given formula.
 
 **Parameters:**
 - `diceFormula` (string): Dice formula in format "XdY" or "XdY±Z"
+- `options` (table, optional): Options table with:
+  - `advantage` (boolean): If true, rolls twice and takes the higher result
+  - `disadvantage` (boolean): If true, rolls twice and takes the lower result
+  - If both are true, they cancel out (normal roll)
 
 **Returns:**
 - `number`: The total result of the roll (minimum 1)
 
-**Example:**
+**Examples:**
 ```lua
 local result = Dice.roll("2d6+3")  -- Returns number between 5-15
+local attack = Dice.roll("d20", {advantage = true})  -- 2d20, take higher
+local save = Dice.roll("d20", {disadvantage = true})  -- 2d20, take lower
 ```
 
 ### Dice.validateFormula(diceFormula)
