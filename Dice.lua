@@ -50,7 +50,7 @@ function Dice.getDicesFromFormula(diceFormula)
 end
 
 -- dice formula can be "2d6" "d6" "2d6+3"
--- options can include: advantage (boolean), disadvantage (boolean)
+-- options can include: advantage (boolean), disadvantage (boolean), returnDetails (boolean)
 function Dice.roll(diceFormula, options)
     if not Dice.validateFormula(diceFormula) then
         if Log and Log.log then
@@ -71,14 +71,30 @@ function Dice.roll(diceFormula, options)
     if hasAdvantage and not hasDisadvantage then
         -- Advantage: roll twice, take higher
         local roll2 = Dice.rollOnce(diceFormula)
-        return math.max(roll1, roll2)
+        local result = math.max(roll1, roll2)
+        
+        if options.returnDetails then
+            return result, {rolls = {roll1, roll2}, type = "advantage"}
+        else
+            return result
+        end
     elseif hasDisadvantage and not hasAdvantage then
         -- Disadvantage: roll twice, take lower
         local roll2 = Dice.rollOnce(diceFormula)
-        return math.min(roll1, roll2)
+        local result = math.min(roll1, roll2)
+        
+        if options.returnDetails then
+            return result, {rolls = {roll1, roll2}, type = "disadvantage"}
+        else
+            return result
+        end
     else
         -- Normal roll (both flags set cancel out, or neither set)
-        return roll1
+        if options.returnDetails then
+            return roll1, {rolls = {roll1}, type = "normal"}
+        else
+            return roll1
+        end
     end
 end
 

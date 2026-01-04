@@ -2,6 +2,8 @@
 
 A lightweight dice rolling library for Love2D, perfect for tabletop RPGs, roguelikes, board games, and any project that needs dice mechanics. Supports standard dice notation with modifiers.
 
+![alt text](image.png)
+
 ## Import into Project
 
 You can either copy the `Dice.lua` file directly into your Love2D project or use this repo as a git submodule.
@@ -67,6 +69,8 @@ cd LoveDnDDice
 ```bash
 love .
 ```
+
+The demo includes a simple GUI with buttons to test different dice rolls including advantage mechanics.
 
 ## Usage
 
@@ -159,11 +163,23 @@ print("Average d20 roll: " .. (sum / #results))
 
 ## Demo
 
-The included demo (`main.lua`) showcases various dice formulas and their results. Run it to see the library in action:
+The included demo (`main.lua`) provides a simple graphical interface for testing dice rolls. It includes buttons for:
 
+- **1D20**: Standard d20 roll
+- **2D4**: Roll two 4-sided dice  
+- **1D20 with Advantage**: Shows both rolls and which one was selected
+- **1D20 with Disadvantage**: Shows both rolls and which one was selected
+
+The interface displays a history of the last 10 dice rolls, showing both the final result and detailed breakdown for advantage/disadvantage rolls.
+
+Click the buttons to roll dice and see the results displayed on screen. For advantage rolls, it shows the individual dice results and indicates which one was chosen.
+
+Run it with:
 ```bash
 love .
 ```
+
+Press ESC to quit the demo.
 
 ## API Reference
 
