@@ -8,7 +8,7 @@ You can either copy the `Dice.lua` file directly into your Love2D project or use
 
 ### Use as a Git Submodule
 
-1. `git submodule add https://github.com/yourusername/LoveDnDDice.git libs/LoveDnDDice`
+1. `git submodule add https://github.com/Saturn91/LoveDnDDice.git libs/LoveDnDDice`
 2. In order to allow relative imports, use this handy code:
 
 ```lua
